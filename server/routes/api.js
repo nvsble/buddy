@@ -32,7 +32,7 @@ const client = new vision.ImageAnnotatorClient();
 // });
 
 /* GET users listing. */
-router.post('/vision', async function (req, res, next) {
+router.post('/vision', async function (req, res, next){
 
     console.dir('hey');
     const [[labelResult], [faceResult], [objectResult]] = await Promise.all([

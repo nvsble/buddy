@@ -13,6 +13,7 @@ export class Awareness extends Component {
             labels: [],
             objects: []
         }
+        this.averageFaceInterest = 0;
     }
 
     componentWillReceiveProps(props) {
@@ -32,14 +33,11 @@ export class Awareness extends Component {
 
     render() {
         return (
-            <div>
-
+            <div style={{color: 'white'}}>
+                <FaceFeatures interesting={this.analyzeFaces()}/>
             </div>
         )
     }
-
-    //Looks through the face array and tries to find anything interesting.
-    //If it does it gives it a score.
 
     analyzeFaces() {
         const categories = {
@@ -55,7 +53,6 @@ export class Awareness extends Component {
         const sentimentMap = new Map();
         Object.keys(categories).forEach(k => sentimentMap.set(k, 0));
 
-        const averageFaceInterest = this.state.averageFaceInterest || 0;
         let localAverageFaceInterest = 0;
         const interestingFaces = [];
         this.state.faces.forEach(face => {
@@ -68,15 +65,28 @@ export class Awareness extends Component {
                     faceInterest += 1;
                 }
             });
-            localAverageFaceInterest += faceInterest;
-            if (faceInterest > averageFaceInterest) {
-                interestingFaces.push(face);
+            localAverageFaceInterest = (localAverageFaceInterest + faceInterest)/2;
+            if (faceInterest >= this.averageFaceInterest) {
+                interestingFaces.push([face, qualities]);
             }
         })
         localAverageFaceInterest /= this.state.faces.length;
-        this.setState({averageFaceInterest: (averageFaceInterest * this.state.faces.length + localAverageFaceInterest * this.state.faces.length) / 2 * this.state.faces.length})
+        this.averageFaceInterest = (this.averageFaceInterest * this.state.faces.length + localAverageFaceInterest * this.state.faces.length) / 2 * this.state.faces.length
         return interestingFaces;
     }
 
+}
 
+const FaceFeatures = ({interesting}) => {
+    return (
+        <div>
+            {
+                interesting.map(([face, qualities]) => (
+                    <div>
+                        {qualities.map(q => <span>{q}</span>)}
+                    </div>
+                ))
+            }
+        </div>
+    );
 }

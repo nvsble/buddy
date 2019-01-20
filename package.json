@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@google-cloud/text-to-speech": "^0.4.0",
     "axios": "^0.18.0",
     "axios-fileupload": "0.0.1",
     "node-fetch": "^2.3.0",
