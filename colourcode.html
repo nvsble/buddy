@@ -1,0 +1,39 @@
+<html>
+<head>
+    <style>
+        body{
+            height: 100%;
+            margin: 0px;
+            box-sizing: border-box;
+        }
+        .codebox{
+            height: 25%;
+        }
+    </style>
+</head>
+
+<body>
+
+<label>Color 1</label>
+<input class="color" type="text"/>
+<label>Color 1</label>
+<input class="color" type="text"/>
+<label>Color 1</label>
+<input class="color" type="text"/>
+<label>Color 1</label>
+<input class="color" type="text"/>
+
+<input type="button" value="button text" onclick="generate()"/>
+<script>
+    function generate() {
+        let newWindow = window.open();
+        newWindow.document.head.innerHTML = document.head.innerHTML;
+        let inputs = [...document.querySelectorAll(('input.color'))];
+        inputs.forEach(input => {
+            const bg = ``
+            newWindow.document.body.innerHTML += `<div class='codebox' style="background: ${input.value}"/>`
+        });
+    }
+</script>
+</body>
+</html>
