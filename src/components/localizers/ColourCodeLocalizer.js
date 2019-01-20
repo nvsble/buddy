@@ -4,42 +4,6 @@ import axios from 'axios';
 
 export default class ColourCodeLocalizer extends Component {
 
-    constructor() {
-        super();
-
-        this.mediaStreamTrack = undefined;
-        this.imageCapture = undefined;
-
-        navigator.mediaDevices.getUserMedia({video: true})
-            .then((mediaStream) => {
-                gotMedia(mediaStream)
-            })
-            .catch(error => console.error('getUserMedia() error:', error));
-
-        const gotMedia = (mediaStream) => {
-            this.mediaStreamTrack = mediaStream.getVideoTracks()[0];
-            this.imageCapture = new ImageCapture(this.mediaStreamTrack);
-        }
-    }
-
-    componentDidMount() {
-        const img = document.querySelector('img');
-
-        setInterval(() => {
-            if (this.imageCapture != undefined) {
-                this.imageCapture.takePhoto()
-                    .then(blob => {
-                        img.src = URL.createObjectURL(blob);
-                        var fd = new FormData();
-                        fd.append('files', blob, 'snapshot');
-                        console.dir(blob);
-                        axios.post('https://c5aada1b.ngrok.io/api/vision', fd, {headers: "Content-Type": "multipart/form"})
-                    })
-                    .catch(error => console.error('takePhoto() error:', error));
-            }
-        }, 5000)
-    }
-
     render() {
         return (
             <div>

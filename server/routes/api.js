@@ -34,17 +34,17 @@ const client = new vision.ImageAnnotatorClient();
 /* GET users listing. */
 router.post('/vision', async function (req, res, next) {
 
-    console.dir(req);
+    console.dir('hey');
     const [[labelResult], [faceResult], [objectResult]] = await Promise.all([
-        client.labelDetection('samples/Rafay.jpg'),
-        client.faceDetection('samples/Smile.jpg'),
-        client.faceDetection('samples/Smile.jpg')
+        client.labelDetection('../samples/Smile.jpg'),
+        client.faceDetection('../samples/IMG_0173.HEIC'),
+        client.objectLocalization('../samples/IMG_0173.HEIC')
     ]);
 
     const labelObjects = labelResult.labelAnnotations;
     const faces = faceResult.faceAnnotations;
     const objectObjects = objectResult.localizedObjectAnnotations;
-    res.json({labels: labelObjects, faced: faces, objects: objectObjects});
+    res.json({labels: labelObjects, faces: faces, objects: objectObjects});
 
 });
 
